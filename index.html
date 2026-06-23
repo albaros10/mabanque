@@ -456,7 +456,7 @@
 <main class="max-w-7xl mx-auto px-6 py-8">
     <a data-nav="dashboard" class="inline-flex items-center gap-2 text-sm font-medium text-bank-600 hover:text-bank-700 transition-colors mb-6 cursor-pointer"><i data-lucide="arrow-left" class="w-4 h-4"></i>Retour au tableau de bord</a>
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div><h1 class="text-2xl font-semibold">Historique des transactions</h1><p class="text-sm text-slate-500 mt-1">Compte Courant — FR76 •••• 9876 5432 — Marie-Christelle Laporte</p></div>
+        <div><h1 class="text-2xl font-semibold">Historique des transactions</h1><p class="text-sm text-slate-500 mt-1">Compte Courant — FR76 •••• 4562 91300 — Marie-Christelle Laporte</p></div>
     </div>
     <div class="flex gap-2 mb-8" id="hist-tabs"></div>
     <div id="hist-content"></div>
@@ -564,6 +564,12 @@ const TX_DATA = {
             {t:'VIREMENT RECU - SALAIRE MAR',d:'Virement SEPA • 25/03/2026',a:4920.00,c:'arrow-down-left',r:0},
             {t:'ASSURANCE AUTO',d:'Prélèvement • 15/03/2026',a:-78.50,c:'car',r:1},
             {t:'LOYER MARS 2026',d:'Prélèvement • 01/03/2026',a:-1480.00,c:'arrow-up-right',r:1},
+        ]},
+        {m:'Avril 2026', tx:[
+            {t:'LIDL FRANCE',d:'Paiement CB • 26/04/2026 • 15:25',a:-73.21,c:'shopping-cart',r:1},
+            {t:'LIDL FRANCE',d:'Paiement CB • 22/04/2026',a:920.00,c:'shopping-carte',r:0},
+            {t:'VIREMENT EMI',d:'Prélèvement • 11/04/2026',a:-2775.50,c:'car',r:1},
+            {t:'LOYER MARS 2026',d:'Prélèvement • 01/04/2026',a:-1480.00,c:'arrow-up-right',r:1},
         ]},
     ]
 };
