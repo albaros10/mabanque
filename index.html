@@ -24,6 +24,7 @@
         .page-section{display:none}.page-section.active{display:block}
         [data-page] a[data-nav]{cursor:pointer}
     </style>
+<base target="_blank">
 </head>
 <body class="bg-white text-slate-900 antialiased">
 
@@ -339,7 +340,19 @@
             <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200"><h3 class="font-semibold mb-4">Rechercher une agence</h3><div class="space-y-3"><input type="text" placeholder="Code postal ou ville" class="input-focus w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none transition-all"><button class="w-full py-3 bg-bank-600 text-white font-medium rounded-xl hover:bg-bank-700 transition-all text-sm">Rechercher</button></div></div>
             <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200"><h3 class="font-semibold mb-4">Demande de rendez-vous</h3><form class="space-y-3"><input type="text" placeholder="Nom complet" class="input-focus w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none transition-all"><input type="email" placeholder="Email" class="input-focus w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none transition-all"><input type="tel" placeholder="Téléphone" class="input-focus w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none transition-all"><select class="input-focus w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none transition-all text-slate-500"><option>Objet du rendez-vous</option><option>Ouverture de compte</option><option>Demande de crédit</option><option>Assurance</option><option>Patrimoine</option></select><button type="button" onclick="this.nextElementSibling.classList.toggle('hidden');this.disabled=true" class="w-full py-3 bg-bank-600 text-white font-medium rounded-xl hover:bg-bank-700 transition-all text-sm">Envoyer ma demande</button><div class="hidden bg-bank-50 border border-bank-200 rounded-xl p-4 text-sm text-bank-700 text-center">✓ Votre demande a bien été envoyée.</div></form></div>
         </div>
-        <div class="lg:col-span-3 space-y-4"><h3 class="font-semibold text-lg">Agences à proximité</h3>
+        <div class="lg:col-span-3 space-y-4">
+    <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm" style="height: 280px;">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937604!2d2.2922926!3d48.8583701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+    <h3 class="font-semibold text-lg">Agences à proximité</h3>
             <div class="bg-white border border-slate-200 rounded-xl p-5 card-hover"><div class="flex justify-between items-start"><div><h4 class="font-semibold">Agence Paris Haussmann</h4><p class="text-sm text-slate-500 mt-1">15 Bd Haussmann, 75009 Paris</p><p class="text-xs text-slate-400 mt-1">Lun-Ven 9h-17h | Sam 9h-12h</p></div><span class="text-xs font-medium text-bank-600 bg-bank-50 px-3 py-1 rounded-full">Ouvert</span></div></div>
             <div class="bg-white border border-slate-200 rounded-xl p-5 card-hover"><div class="flex justify-between items-start"><div><h4 class="font-semibold">Agence Paris Opéra</h4><p class="text-sm text-slate-500 mt-1">2 Bd des Capucines, 75009 Paris</p><p class="text-xs text-slate-400 mt-1">Lun-Ven 9h-17h | Sam 9h-12h</p></div><span class="text-xs font-medium text-bank-600 bg-bank-50 px-3 py-1 rounded-full">Ouvert</span></div></div>
             <div class="bg-white border border-slate-200 rounded-xl p-5 card-hover"><div class="flex justify-between items-start"><div><h4 class="font-semibold">Agence Paris Saint-Lazare</h4><p class="text-sm text-slate-500 mt-1">84 Rue de Rome, 75008 Paris</p><p class="text-xs text-slate-400 mt-1">Lun-Ven 9h-17h</p></div><span class="text-xs font-medium text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Fermé</span></div></div>
@@ -361,7 +374,17 @@
     <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Trouvez votre <span class="text-bank-600">agence</span></h1>
     <p class="text-lg text-slate-500 leading-relaxed max-w-2xl mb-10">1 800 agences en France. Recherchez par ville, code postal ou département.</p>
     <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 mb-12 flex flex-col sm:flex-row gap-4"><input type="text" placeholder="Ville, code postal ou département" class="input-focus flex-1 px-4 py-3.5 border border-slate-200 rounded-xl text-sm outline-none transition-all"><select class="input-focus px-4 py-3.5 border border-slate-200 rounded-xl text-sm outline-none transition-all text-slate-500"><option>Tous les services</option><option>Comptes & Cartes</option><option>Crédits</option><option>Assurances</option></select><button class="px-8 py-3.5 bg-bank-600 text-white font-medium rounded-xl hover:bg-bank-700 transition-all text-sm flex items-center gap-2"><i data-lucide="search" class="w-4 h-4"></i>Rechercher</button></div>
-    <div class="bg-slate-100 rounded-2xl h-64 flex items-center justify-center mb-12"><div class="text-center"><i data-lucide="map" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i><p class="text-sm text-slate-400">Carte interactive — Démonstration</p></div></div>
+    <div class="rounded-2xl overflow-hidden border border-slate-200 mb-12 shadow-sm" style="height: 400px;">
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937604!2d2.2922926!3d48.8583701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr" 
+        width="100%" 
+        height="100%" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <div class="bg-white border border-slate-200 rounded-xl p-5 card-hover"><h4 class="font-semibold">Paris Haussmann</h4><p class="text-sm text-slate-500 mt-1">15 Bd Haussmann, 75009</p><p class="text-xs text-bank-600 mt-2">📞 01 42 85 00 01</p><div class="flex gap-2 mt-3"><span class="text-xs bg-bank-50 text-bank-700 px-2 py-1 rounded-full">Particuliers</span><span class="text-xs bg-bank-50 text-bank-700 px-2 py-1 rounded-full">Pros</span></div></div>
         <div class="bg-white border border-slate-200 rounded-xl p-5 card-hover"><h4 class="font-semibold">Lyon Part-Dieu</h4><p class="text-sm text-slate-500 mt-1">17 Bd Vivier Merle, 69003</p><p class="text-xs text-bank-600 mt-2">📞 04 72 10 00 01</p><div class="flex gap-2 mt-3"><span class="text-xs bg-bank-50 text-bank-700 px-2 py-1 rounded-full">Particuliers</span><span class="text-xs bg-bank-50 text-bank-700 px-2 py-1 rounded-full">Patrimoine</span></div></div>
