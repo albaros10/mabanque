@@ -373,9 +373,10 @@
     <span class="inline-block text-xs font-medium text-bank-600 uppercase tracking-widest mb-4">Réseau d'agences</span>
     <h1 class="text-3xl lg:text-5xl font-semibold tracking-tight mb-4">Trouvez votre <span class="text-bank-600">agence</span></h1>
     <p class="text-lg text-slate-500 leading-relaxed max-w-2xl mb-10">1 800 agences en France. Recherchez par ville, code postal ou département.</p>
-    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 mb-12 flex flex-col sm:flex-row gap-4"><input type="text" placeholder="Ville, code postal ou département" class="input-focus flex-1 px-4 py-3.5 border border-slate-200 rounded-xl text-sm outline-none transition-all"><select class="input-focus px-4 py-3.5 border border-slate-200 rounded-xl text-sm outline-none transition-all text-slate-500"><option>Tous les services</option><option>Comptes & Cartes</option><option>Crédits</option><option>Assurances</option></select><button class="px-8 py-3.5 bg-bank-600 text-white font-medium rounded-xl hover:bg-bank-700 transition-all text-sm flex items-center gap-2"><i data-lucide="search" class="w-4 h-4"></i>Rechercher</button></div>
+    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 mb-12 flex flex-col sm:flex-row gap-4"><input type="text" id="agence-search-input" placeholder="Ville, code postal ou département" class="input-focus flex-1 px-4 py-3.5 border border-slate-200 rounded-xl text-sm outline-none transition-all"><select id="agence-service-select" class="input-focus px-4 py-3.5 border border-slate-200 rounded-xl text-sm outline-none transition-all text-slate-500"><option>Tous les services</option><option>Comptes & Cartes</option><option>Crédits</option><option>Assurances</option></select><button onclick="searchAgenceMap()" class="px-8 py-3.5 bg-bank-600 text-white font-medium rounded-xl hover:bg-bank-700 transition-all text-sm flex items-center gap-2"><i data-lucide="search" class="w-4 h-4"></i>Rechercher</button></div>
     <div class="rounded-2xl overflow-hidden border border-slate-200 mb-12 shadow-sm" style="height: 400px;">
     <iframe 
+        id="agence-map-iframe"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937604!2d2.2922926!3d48.8583701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr" 
         width="100%" 
         height="100%" 
@@ -755,6 +756,46 @@ function handleLogin(e){e.preventDefault();const btn=document.getElementById('lo
 
 // ===== TOAST =====
 function showToast(m,t='info'){const c=document.getElementById('toast-container'),d=document.createElement('div');const cl={info:'bg-slate-800 text-white',success:'bg-bank-600 text-white',error:'bg-red-600 text-white',warning:'bg-amber-500 text-white'};const ic={info:'info',success:'check-circle',error:'alert-circle',warning:'alert-triangle'};d.className=`toast-enter ${cl[t]} rounded-xl px-5 py-4 shadow-2xl flex items-start gap-3 max-w-sm`;d.innerHTML=`<i data-lucide="${ic[t]}" class="w-5 h-5 flex-shrink-0 mt-0.5"></i><p class="text-sm leading-relaxed">${m}</p><button onclick="this.parentElement.remove()" class="flex-shrink-0 opacity-60 hover:opacity-100"><i data-lucide="x" class="w-4 h-4"></i></button>`;c.appendChild(d);lucide.createIcons();setTimeout(()=>{if(d.parentElement){d.style.transition='all 300ms';d.style.opacity='0';d.style.transform='translateX(100%)';setTimeout(()=>d.remove(),300)}},5000)}
+
+// ===== RECHERCHE AGENCES GOOGLE MAPS =====
+function searchAgenceMap() {
+    const input = document.getElementById('agence-search-input');
+    const iframe = document.getElementById('agence-map-iframe');
+    if (!input || !iframe) return;
+
+    const query = input.value.trim();
+    if (!query) {
+        showToast('Veuillez saisir une ville ou un code postal', 'warning');
+        return;
+    }
+
+    // Construire l'URL de recherche Google Maps Embed
+    // On ajoute "agence bancaire" pour affiner les résultats
+    const searchTerm = encodeURIComponent(query + ' agence bancaire');
+    const newSrc = `https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d100000!2d2.35!3d48.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1s${searchTerm}!5e0!3m2!1sfr!2sfr!4v1700000000000!5m2!1sfr!2sfr`;
+
+    // Alternative plus simple et fiable : utiliser le mode "search" de Google Maps Embed
+    const simpleSearchUrl = `https://www.google.com/maps/embed/v1/search?key=&q=${searchTerm}&center=48.8566,2.3522&zoom=12&language=fr`;
+
+    // Méthode la plus fiable : utiliser l'URL de recherche standard de Google Maps
+    const mapsSearchUrl = `https://www.google.com/maps?q=${searchTerm}&output=embed&hl=fr`;
+
+    iframe.src = mapsSearchUrl;
+    showToast(`Recherche de : "${query}"`, 'success');
+}
+
+// Permettre la recherche avec la touche Entrée
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('agence-search-input');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchAgenceMap();
+            }
+        });
+    }
+});
 
 // ===== BOOT =====
 document.addEventListener('DOMContentLoaded', () => {
