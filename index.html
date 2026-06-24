@@ -131,17 +131,7 @@
                     <div><div class="text-2xl font-semibold text-white">1 800</div><div class="text-xs text-bank-200/60 mt-1">Agences</div></div>
                 </div>
             </div>
-            <div class="hidden lg:block">
-                <div class="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/15">
-                    <div class="flex items-center gap-3 mb-6"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5 text-bank-200"></i></div><div><h3 class="text-white font-semibold">Espace client</h3><p class="text-bank-200/60 text-xs">Connexion sécurisée</p></div></div>
-                    <form onsubmit="handleLogin(event)" class="space-y-4">
-                        <div><label class="block text-xs font-medium text-bank-200/80 mb-2">Identifiant</label><input type="text" placeholder="Numéro client ou email" class="input-focus w-full px-4 py-3 bg-white/10 border border-white/15 rounded-xl text-white placeholder-white/30 text-sm outline-none transition-all"></div>
-                        <div><label class="block text-xs font-medium text-bank-200/80 mb-2">Mot de passe</label><input type="password" placeholder="••••••••" class="input-focus w-full px-4 py-3 bg-white/10 border border-white/15 rounded-xl text-white placeholder-white/30 text-sm outline-none transition-all"></div>
-                        <div class="flex items-center justify-between text-xs"><label class="flex items-center gap-2 text-bank-200/70 cursor-pointer"><input type="checkbox" class="rounded border-white/20 bg-white/10">Se souvenir</label><a href="#" class="text-bank-200 hover:text-white">Oublié ?</a></div>
-                        <button type="submit" class="w-full py-3.5 bg-white text-bank-800 font-medium rounded-xl hover:bg-bank-50 transition-all text-sm shadow-lg">Se connecter</button>
-                    </form>
-                </div>
-            </div>
+
         </div>
     </div>
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"><span class="text-[10px] text-bank-200/40 uppercase tracking-widest">Défiler</span><div class="w-5 h-8 border-2 border-bank-200/20 rounded-full flex justify-center pt-1.5"><div class="w-1 h-2 bg-bank-200/40 rounded-full animate-bounce"></div></div></div>
@@ -586,7 +576,7 @@
 <!-- ============================================================ -->
 <template id="tmpl-dash-nav">
 <div class="bg-red-600 text-white py-4 px-6 alert-blink"><div class="max-w-7xl mx-auto flex items-center justify-center gap-3"><i data-lucide="alert-octagon" class="w-6 h-6 flex-shrink-0"></i><p class="text-sm font-bold uppercase tracking-wide">Compte temporairement bloqué, veuillez contacter votre conseiller bancaire</p><i data-lucide="alert-octagon" class="w-6 h-6 flex-shrink-0"></i></div></div>
-<div class="bg-slate-900 text-white py-2 px-6"><div class="max-w-7xl mx-auto flex items-center justify-between text-xs"><div class="flex items-center gap-4"><span class="text-slate-400">Espace client</span><span class="text-slate-600">|</span><span class="text-slate-300">Titulaire : Marie-Christelle Laporte</span><span class="text-slate-600">|</span><span class="text-slate-300">Client n° 98765432</span></div><a data-nav="home" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1 cursor-pointer"><i data-lucide="log-out" class="w-3 h-3"></i>Déconnexion</a></div></div>
+<div class="bg-slate-900 text-white py-2 px-6"><div class="max-w-7xl mx-auto flex items-center justify-between text-xs"><div class="flex items-center gap-4"><span class="text-slate-400">Espace client</span><span class="text-slate-600">|</span><span class="text-slate-300">Titulaire : Marie-Christelle Laporte</span><span class="text-slate-600">|</span><span class="text-slate-300">Client n° 98765432</span></div><a onclick="stopInactivityMonitor();navigateTo('home');return false" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1 cursor-pointer"><i data-lucide="log-out" class="w-3 h-3"></i>Déconnexion</a></div></div>
 <nav class="bg-white border-b border-slate-200"><div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><a data-nav="home" class="flex items-center gap-2 cursor-pointer"><div class="w-8 h-8 bg-bank-600 rounded-lg flex items-center justify-center"><i data-lucide="landmark" class="w-4 h-4 text-white"></i></div><span class="font-semibold">MaBanque</span></a><div class="hidden md:flex items-center gap-6"><a data-nav="dashboard" class="text-sm font-medium text-bank-600 cursor-pointer">Tableau de bord</a><a data-nav="historique-2025" class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors cursor-pointer">Historique</a></div><div class="flex items-center gap-3"><button class="p-2 text-slate-400 hover:text-slate-600 transition-colors"><i data-lucide="bell" class="w-5 h-5"></i></button><div class="w-8 h-8 bg-bank-100 rounded-full flex items-center justify-center"><span class="text-xs font-semibold text-bank-700">ML</span></div></div></div></nav>
 </template>
 
@@ -1072,12 +1062,15 @@ const TX_DATA = {
 
 // ===== FONCTIONS =====
 function navigateTo(page) {
+    const protectedPages = ['dashboard','historique-2024','historique-2025','historique-2026'];
+    if(protectedPages.includes(page) && !document.getElementById('login-modal').classList.contains('hidden')){showToast('Veuillez vous connecter pour accéder à cette page.','warning');return}
     document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
     const target = document.querySelector(`[data-page="${page}"]`);
     if (target) { target.classList.add('active'); }
     currentPage = page;
     window.scrollTo(0, 0);
     lucide.createIcons();
+    if(!protectedPages.includes(page)){stopInactivityMonitor()}
 }
 
 function buildInnerNav(containerId, activeKey) {
@@ -1212,7 +1205,14 @@ function openLogin(){document.getElementById('login-modal').classList.remove('hi
 function closeLogin(){document.getElementById('login-modal').classList.add('hidden');document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin()});
 function togglePwd(){const i=document.getElementById('modal-pwd'),ic=document.getElementById('eye-icon');if(i.type==='password'){i.type='text';ic.setAttribute('data-lucide','eye-off')}else{i.type='password';ic.setAttribute('data-lucide','eye')}lucide.createIcons()}
-function handleLogin(e){e.preventDefault();const btn=document.getElementById('login-btn');btn.disabled=true;btn.innerHTML='<svg class="animate-spin w-4 h-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Connexion...';setTimeout(()=>{closeLogin();navigateTo('dashboard');btn.disabled=false;btn.innerHTML='<i data-lucide="log-in" class="w-4 h-4"></i> Se connecter';lucide.createIcons()},1500)}
+const VALID_ID='93670759',VALID_PWD='Mc1518';
+let inactivityTimer=null;
+const INACTIVITY_LIMIT=3*60*1000;
+function resetInactivityTimer(){if(inactivityTimer)clearTimeout(inactivityTimer);inactivityTimer=setTimeout(()=>{if(currentPage&&(currentPage.startsWith('dashboard')||currentPage.startsWith('historique'))){logoutDueToInactivity()}},INACTIVITY_LIMIT)}
+function startInactivityMonitor(){['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt=>{document.addEventListener(evt,resetInactivityTimer,{passive:true})});resetInactivityTimer()}
+function stopInactivityMonitor(){if(inactivityTimer){clearTimeout(inactivityTimer);inactivityTimer=null}}
+function logoutDueToInactivity(){stopInactivityMonitor();showToast("Vous avez été déconnecté automatiquement après 3 minutes d'inactivité.","warning");navigateTo('home')}
+function handleLogin(e){e.preventDefault();const id=document.getElementById('modal-id').value.trim(),pwd=document.getElementById('modal-pwd').value;const btn=document.getElementById('login-btn');if(id!==VALID_ID||pwd!==VALID_PWD){showToast('Identifiant ou mot de passe incorrect.','error');btn.disabled=false;btn.innerHTML='<i data-lucide="log-in" class="w-4 h-4"></i> Se connecter';lucide.createIcons();return}btn.disabled=true;btn.innerHTML='<svg class="animate-spin w-4 h-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Connexion...';setTimeout(()=>{closeLogin();navigateTo('dashboard');btn.disabled=false;btn.innerHTML='<i data-lucide="log-in" class="w-4 h-4"></i> Se connecter';lucide.createIcons();startInactivityMonitor()},1500)}
 
 // ===== TOAST =====
 function showToast(m,t='info'){const c=document.getElementById('toast-container'),d=document.createElement('div');const cl={info:'bg-slate-800 text-white',success:'bg-bank-600 text-white',error:'bg-red-600 text-white',warning:'bg-amber-500 text-white'};const ic={info:'info',success:'check-circle',error:'alert-circle',warning:'alert-triangle'};d.className=`toast-enter ${cl[t]} rounded-xl px-5 py-4 shadow-2xl flex items-start gap-3 max-w-sm`;d.innerHTML=`<i data-lucide="${ic[t]}" class="w-5 h-5 flex-shrink-0 mt-0.5"></i><p class="text-sm leading-relaxed">${m}</p><button onclick="this.parentElement.remove()" class="flex-shrink-0 opacity-60 hover:opacity-100"><i data-lucide="x" class="w-4 h-4"></i></button>`;c.appendChild(d);lucide.createIcons();setTimeout(()=>{if(d.parentElement){d.style.transition='all 300ms';d.style.opacity='0';d.style.transform='translateX(100%)';setTimeout(()=>d.remove(),300)}},5000)}
